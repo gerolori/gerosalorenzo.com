@@ -1,0 +1,24 @@
+{{- if not .Params.series }}{{ return }}{{ end -}}
+{{- range $seriesName := .Params.series -}}
+  {{- with (index $.Site.Taxonomies.series $seriesName) -}}
+    {{- $seriesPage := .Page -}}
+    {{- $seriesTotal := $seriesPage.Params.series_total | default (len .Pages) -}}
+    {{- $currentPart := $.Params.series_weight | default "?" -}}
+    
+    {{- /* Calculate total read time and latest date */ -}}
+    {{- $totalReadTime := 0 -}}
+    {{- $latestDate := (time "1970-01-01") -}}
+    {{- range .Pages -}}
+      {{- $totalReadTime = add $totalReadTime .ReadingTime -}}
+      {{- if gt .Date $latestDate -}}
+        {{- $latestDate = .Date -}}
+      {{- end -}}
+    {{- end -}}
+    
+    <a href="{{ $seriesPage.RelPermalink }}" class="series-chip" aria-label="Part {{ $currentPart }} of {{ $seriesTotal }} in {{ $seriesPage.Title }}">
+      <span class="series-chip-name">{{ $seriesPage.Title }}</span>
+      <span class="series-chip-progress">Part {{ $currentPart }} of {{ $seriesTotal }}</span>
+      <span class="series-chip-meta"><span title='{{ $latestDate }}'>{{ $latestDate.Format "Jan 2, 2006" }}</span>&nbsp;·&nbsp;{{ $totalReadTime }} min read</span>
+    </a>
+  {{- end -}}
+{{- end -}}

@@ -1,0 +1,51 @@
+{{- define "main" }}
+
+<header class="page-header">
+    <h1>{{- (printf "%s&nbsp;" .Title ) | htmlUnescape -}}
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+    </h1>
+    {{- if .Description }}
+    <div class="post-description">
+        {{ .Description }}
+    </div>
+    {{- end }}
+    {{- if not (.Param "hideMeta") }}
+    <div class="post-meta">
+        {{- partial "translation_list.html" . -}}
+    </div>
+    {{- end }}
+</header>
+
+<div id="searchbox">
+    <div style="position: relative;">
+        <input id="searchInput" autofocus placeholder="{{ .Params.placeholder | default (printf "%s ↵" .Title) }}"
+            aria-label="search" type="search" autocomplete="off" maxlength="64"
+            style="padding-right: 90px;">
+        <kbd style="position: absolute; 
+                    right: 10px; 
+                    top: 50%; 
+                    transform: translateY(-50%); 
+                    background: var(--code-bg); 
+                    padding: 3px 8px; 
+                    border-radius: 4px; 
+                    font-size: 11px; 
+                    font-weight: 400;
+                    color: var(--secondary); 
+                    border: 1px solid var(--border);
+                    pointer-events: none;
+                    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+                    letter-spacing: 0.5px;
+                    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);">Ctrl + /</kbd>
+    </div>
+    <ul id="searchResults" aria-label="search results"></ul>
+</div>
+
+{{- /* Load custom search script with card layout and highlighting */ -}}
+{{- $searchJs := resources.Get "js/custom-search.js" | js.Build (dict "params" site.Params) -}}
+<script defer src="{{ $searchJs.RelPermalink }}"></script>
+
+{{- end }}{{/* end main */}}

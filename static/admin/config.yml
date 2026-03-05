@@ -1,0 +1,256 @@
+backend:
+  name: github
+  repo: gerolori/gerosalorenzo.com-dev  # Private repo where CMS edits
+  branch: main
+  base_url: https://gerosalorenzo.com  # Will be updated with Worker URL
+  auth_endpoint: /api/auth
+
+# Enable editorial workflow for content review
+publish_mode: editorial_workflow
+squash_merges: true  # Squash all commits in draft PR into single commit when publishing
+
+# Global media folder for shared assets
+media_folder: "static/images/uploads"
+public_folder: "/images/uploads"
+
+# Local development support
+local_backend: true
+
+# Site metadata
+site_url: https://gerosalorenzo.com
+display_url: https://gerosalorenzo.com
+logo_url: https://gerosalorenzo.com/favicon_logo/favicon-32x32.png
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    label_singular: "Post"
+    folder: "content/blog"
+    create: true
+    delete: true
+    path: "{{year}}-{{month}}-{{day}}-{{slug}}/index"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    media_folder: ""
+    public_folder: ""
+    summary: "{{title}} ({{year}}-{{month}}-{{day}})"
+    sortable_fields: ["date", "title"]
+
+    # View filters
+    view_filters:
+      - label: "Drafts"
+        field: draft
+        pattern: true
+      - label: "Published"
+        field: draft
+        pattern: false
+
+    # View groups
+    view_groups:
+      - label: "Year"
+        field: date
+        pattern: \d{4}
+      - label: "Category"
+        field: categories
+
+    # Frontmatter fields
+    fields:
+      # Core fields
+      - {label: "Title", name: "title", widget: "string", required: true}
+      - {label: "Date", name: "date", widget: "datetime", required: true}
+      - {label: "Draft", name: "draft", widget: "boolean", default: true}
+      - {label: "Description", name: "description", widget: "text", required: true}
+      - {label: "Canonical URL", name: "canonicalURL", widget: "string", required: false}
+      
+      # Taxonomies
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - label: "Categories"
+        name: "categories"
+        widget: "select"
+        multiple: true
+        options: ["3d-printing", "self-hosting", "programming", "tutorial"]
+        required: false
+      - {label: "Series", name: "series", widget: "list", required: false}
+      - {label: "Series Weight", name: "series_weight", widget: "number", required: false, value_type: "int", min: 1}
+      
+      # Display settings
+      - {label: "Show Table of Contents", name: "showToc", widget: "boolean", default: true}
+      - {label: "TOC Open by Default", name: "TocOpen", widget: "boolean", default: false}
+      - {label: "Hide Meta", name: "hidemeta", widget: "boolean", default: false}
+      - {label: "Comments", name: "comments", widget: "boolean", default: false}
+      - {label: "Hide Summary", name: "hideSummary", widget: "boolean", default: false}
+      - {label: "Search Hidden", name: "searchHidden", widget: "boolean", default: false}
+      - {label: "Disable Share", name: "disableShare", widget: "boolean", default: false}
+      - {label: "Disable Highlight.js", name: "disableHLJS", widget: "boolean", default: false}
+      
+      # Reading experience
+      - {label: "Show Reading Time", name: "ShowReadingTime", widget: "boolean", default: true}
+      - {label: "Show Breadcrumbs", name: "ShowBreadCrumbs", widget: "boolean", default: true}
+      - {label: "Show Post Nav Links", name: "ShowPostNavLinks", widget: "boolean", default: true}
+      - {label: "Show Word Count", name: "ShowWordCount", widget: "boolean", default: true}
+      - {label: "Show RSS Button", name: "ShowRssButtonInSectionTermList", widget: "boolean", default: true}
+      - {label: "Use Hugo TOC", name: "UseHugoToc", widget: "boolean", default: true}
+      
+      # Cover image
+      - label: "Cover Image"
+        name: "cover"
+        widget: "object"
+        required: false
+        collapsed: true
+        fields:
+          - {label: "Image", name: "image", widget: "image", required: false}
+          - {label: "Alt Text", name: "alt", widget: "string", required: false}
+          - {label: "Caption", name: "caption", widget: "string", required: false}
+          - {label: "Relative Path", name: "relative", widget: "boolean", default: false}
+          - {label: "Hidden", name: "hidden", widget: "boolean", default: true}
+      
+      # Edit post link
+      - label: "Edit Post"
+        name: "editPost"
+        widget: "object"
+        required: false
+        collapsed: true
+        fields:
+          - {label: "URL", name: "URL", widget: "string", default: "https://github.com/gerolori/gerosalorenzo.com/tree/main/content"}
+          - {label: "Text", name: "Text", widget: "string", default: "Suggest Changes"}
+          - {label: "Append File Path", name: "appendFilePath", widget: "boolean", default: true}
+      
+      # Content
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "drafts"
+    label: "Drafts"
+    label_singular: "Draft"
+    folder: "content/blog/drafts"
+    create: true
+    delete: true
+    path: "{{year}}-{{month}}-{{day}}-{{slug}}/index"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    media_folder: ""
+    public_folder: ""
+    summary: "{{title}} ({{year}}-{{month}}-{{day}})"
+    sortable_fields: ["date", "title"]
+
+    # View filters
+    view_filters:
+      - label: "Drafts"
+        field: draft
+        pattern: true
+      - label: "Published"
+        field: draft
+        pattern: false
+
+    # View groups
+    view_groups:
+      - label: "Year"
+        field: date
+        pattern: \d{4}
+      - label: "Category"
+        field: categories
+
+    # Frontmatter fields
+    fields:
+      # Core fields
+      - {label: "Title", name: "title", widget: "string", required: true}
+      - {label: "Date", name: "date", widget: "datetime", required: true}
+      - {label: "Draft", name: "draft", widget: "boolean", default: true}
+      - {label: "Description", name: "description", widget: "text", required: true}
+      - {label: "Canonical URL", name: "canonicalURL", widget: "string", required: false}
+      
+      # Taxonomies
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - label: "Categories"
+        name: "categories"
+        widget: "select"
+        multiple: true
+        options: ["3d-printing", "self-hosting", "programming", "tutorial"]
+        required: false
+      - {label: "Series", name: "series", widget: "list", required: false}
+      - {label: "Series Weight", name: "series_weight", widget: "number", required: false, value_type: "int", min: 1}
+      
+      # Display settings
+      - {label: "Show Table of Contents", name: "showToc", widget: "boolean", default: true}
+      - {label: "TOC Open by Default", name: "TocOpen", widget: "boolean", default: false}
+      - {label: "Hide Meta", name: "hidemeta", widget: "boolean", default: false}
+      - {label: "Comments", name: "comments", widget: "boolean", default: false}
+      - {label: "Hide Summary", name: "hideSummary", widget: "boolean", default: false}
+      - {label: "Search Hidden", name: "searchHidden", widget: "boolean", default: false}
+      - {label: "Disable Share", name: "disableShare", widget: "boolean", default: false}
+      - {label: "Disable Highlight.js", name: "disableHLJS", widget: "boolean", default: false}
+      
+      # Reading experience
+      - {label: "Show Reading Time", name: "ShowReadingTime", widget: "boolean", default: true}
+      - {label: "Show Breadcrumbs", name: "ShowBreadCrumbs", widget: "boolean", default: true}
+      - {label: "Show Post Nav Links", name: "ShowPostNavLinks", widget: "boolean", default: true}
+      - {label: "Show Word Count", name: "ShowWordCount", widget: "boolean", default: true}
+      - {label: "Show RSS Button", name: "ShowRssButtonInSectionTermList", widget: "boolean", default: true}
+      - {label: "Use Hugo TOC", name: "UseHugoToc", widget: "boolean", default: true}
+      
+      # Cover image
+      - label: "Cover Image"
+        name: "cover"
+        widget: "object"
+        required: false
+        collapsed: true
+        fields:
+          - {label: "Image", name: "image", widget: "image", required: false}
+          - {label: "Alt Text", name: "alt", widget: "string", required: false}
+          - {label: "Caption", name: "caption", widget: "string", required: false}
+          - {label: "Relative Path", name: "relative", widget: "boolean", default: false}
+          - {label: "Hidden", name: "hidden", widget: "boolean", default: true}
+      
+      # Edit post link
+      - label: "Edit Post"
+        name: "editPost"
+        widget: "object"
+        required: false
+        collapsed: true
+        fields:
+          - {label: "URL", name: "URL", widget: "string", default: "https://github.com/gerolori/gerosalorenzo.com/tree/main/content"}
+          - {label: "Text", name: "Text", widget: "string", default: "Suggest Changes"}
+          - {label: "Append File Path", name: "appendFilePath", widget: "boolean", default: true}
+      
+      # Content
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "series"
+    label: "Series"
+    label_singular: "Series"
+    folder: "content/series"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    path: "{{slug}}/_index"
+    media_folder: ""
+    public_folder: ""
+    summary: "{{title}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string", required: true}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "About Page"
+        name: "about"
+        file: "content/about/index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Description", name: "description", widget: "text", required: false}
+          - {label: "Body", name: "body", widget: "markdown"}
+
+      - label: "Explore Page"
+        name: "explore"
+        file: "content/explore.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Description", name: "description", widget: "text", required: false}
+          - {label: "Body", name: "body", widget: "markdown"}
+
+      - label: "Search Page"
+        name: "search"
+        file: "content/search.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Description", name: "description", widget: "text", required: false}
+          - {label: "Body", name: "body", widget: "markdown"}

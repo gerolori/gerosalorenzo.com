@@ -1,0 +1,31 @@
+{{- /* Support both direct page context and dict with page + options */ -}}
+{{- $currentPage := . -}}
+{{- $hideSeriesName := false -}}
+
+{{- /* Detect calling convention: dict vs direct page */ -}}
+{{- if reflect.IsMap . -}}
+  {{- /* New dict-based convention: (dict "page" . "hideSeriesName" true) */ -}}
+  {{- with .page -}}
+    {{- $currentPage = . -}}
+  {{- end -}}
+  {{- $hideSeriesName = .hideSeriesName | default false -}}
+{{- end -}}
+
+{{- if not $currentPage.Params.series }}{{ return }}{{ end -}}
+{{- range $seriesName := $currentPage.Params.series -}}
+  {{- with (index $currentPage.Site.Taxonomies.series $seriesName) -}}
+    {{- $seriesPage := .Page -}}
+    {{- $seriesTotal := $seriesPage.Params.series_total | default (len .Pages) -}}
+    {{- $currentPart := $currentPage.Params.series_weight | default "?" -}}
+    
+    {{- $linkTarget := cond $hideSeriesName $currentPage.RelPermalink $seriesPage.RelPermalink -}}
+    <a href="{{ $linkTarget }}" class="series-bookmark" aria-label="Part {{ $currentPart }} of {{ $seriesTotal }}{{ if not $hideSeriesName }} in {{ $seriesPage.Title }}{{ end }}">
+      <div class="series-bookmark-content">
+        {{- if not $hideSeriesName -}}
+        <span class="series-name">{{ $seriesPage.Title }}</span>
+        {{- end -}}
+        <span class="series-progress{{ if $hideSeriesName }} no-separator{{ end }}">{{ $currentPart }}/{{ $seriesTotal }}</span>
+      </div>
+    </a>
+  {{- end -}}
+{{- end -}}

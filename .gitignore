@@ -1,0 +1,38 @@
+Copies everything
+### Hugo ###
+# Build output
+/public/
+/resources/_gen/
+hugo_stats.json
+.hugo_build.lock
+
+# Hugo binaries (if committed accidentally)
+hugo.exe
+hugo.darwin
+hugo.linuxgg
+
+### Node (if using npm for themes/assets) ###
+node_modules/
+npm-debug.log*
+
+### OS ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### Editor ###
+.vscode/
+.idea/
+*.swp
+*.swo
+
+### Env / Secrets ###
+.env
+*.env
+
+### Beads Issue Tracking ###
+.beads/*.db
+.beads/*.db-journal
+
+# bv (beads viewer) local config and caches
+.bv/

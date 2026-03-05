@@ -1,0 +1,271 @@
+/**
+ * Decap CMS Mobile Optimization
+ * Fixes viewport overflow and header layout issues
+ */
+
+@media screen and (max-width: 799px) {
+  
+  /* Global viewport constraints */
+  * {
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Override responsive-decap dropdown positioning */
+  /* Dropdowns should appear near their trigger, not at bottom of screen */
+  [class*=DropdownList] {
+    position: fixed !important;  /* Changed from absolute to fixed */
+    top: auto !important;
+    bottom: auto !important;
+    left: 50% !important;  /* Center horizontally */
+    right: auto !important;
+    transform: translateX(-50%) !important;  /* Center offset */
+    min-width: 150px !important;
+    max-width: 90vw !important;
+    width: auto !important;
+    margin: 4px 0 !important;
+    background: white !important;
+    border: 1px solid #ddd !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+    z-index: 99999 !important;  /* Higher z-index */
+    max-height: 60vh !important;  /* Prevent dropdowns taller than screen */
+    overflow-y: auto !important;  /* Scroll if too many items */
+  }
+  
+  /* Ensure dropdown items are readable */
+  [class*=DropdownList] li,
+  [class*=DropdownList] button,
+  [class*=DropdownList] a {
+    padding: 8px 12px !important;
+    white-space: nowrap !important;
+    font-size: 14px !important;
+  }
+  
+  html, body {
+    overflow-x: hidden !important;
+    width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Main containers */
+  [class*="App"],
+  [class*="AppHeader"],
+  [class*="AppMain"] {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Header fixes - THE CRITICAL SECTION */
+  [class*="AppHeaderContent"],
+  [class*="AppHeader-content"] {
+    max-width: 100vw !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+  }
+  
+  /* Site name - prevent overflow */
+  [class*="AppHeaderSiteName"],
+  [class*="AppHeaderButton-text"] {
+    max-width: calc(100vw - 120px) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 14px !important;
+    flex-shrink: 1 !important;
+  }
+  
+  /* Header buttons */
+  [class*="AppHeaderButton"] {
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Avatar */
+  [class*="AppHeaderAvatar"],
+  [class*="AppHeaderAvatar"] img {
+    width: 32px !important;
+    height: 32px !important;
+    max-width: 32px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Fix top navigation tabs - make them visible and scrollable */
+  [class*="AppHeaderNavList"],
+  [class*="AppHeader-navList"],
+  nav[class*="AppHeader"] ul {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    max-width: 100vw !important;
+    gap: 8px !important;
+    padding: 4px 0 !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  [class*="AppHeaderNavLink"],
+  [class*="AppHeader-navLink"],
+  nav[class*="AppHeader"] a {
+    white-space: nowrap !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Main content */
+  [class*="AppMainContainer"] {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    overflow-x: hidden !important;
+    padding: 12px !important;
+  }
+
+  /* Editor & forms */
+  [class*="EditorContainer"],
+  [class*="FormControl"],
+  input, textarea, select {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Media library */
+  [class*="MediaLibrary"],
+  [class*="Modal"] {
+    max-width: 95vw !important;
+    width: 95vw !important;
+    margin: 0 auto !important;
+  }
+
+  /* Toolbar */
+  [class*="ControlPane"],
+  [class*="Toolbar"] {
+    max-width: 100vw !important;
+    overflow-x: auto !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Fix "New Post" button bar overflow */
+  [class*="CollectionTop"],
+  [class*="Collection-top"] {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    gap: 8px !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+  }
+  
+  [class*="CollectionTopRow"],
+  [class*="CollectionTop-row"] {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+  
+  [class*="CollectionTopNewButton"],
+  [class*="CollectionTop-newButton"] {
+    flex: 0 1 auto !important;
+    max-width: calc(100vw - 100px) !important;
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Fix list/grid view selector overflow */
+  [class*="ViewControls"],
+  [class*="View-controls"],
+  [class*="ViewSwitch"] {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin-top: 8px !important;
+  }
+  
+  [class*="ViewControl"],
+  [class*="ViewButton"],
+  [class*="ViewSwitch"] button {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Search and filter controls */
+  [class*="ControlContainer"],
+  [class*="FilterControl"] {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  [class*="SearchInput"],
+  input[type="search"] {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Safety measures */
+  pre, code, table {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+  
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Fix bottom spacing - prevent content hidden behind toolbar */
+  [class*="CollectionContainer"],
+  [class*="EntryListing"],
+  [class*="ScrollSync"] {
+    padding-bottom: 80px !important;
+  }
+
+  /* Prevent any top-level containers from overflowing */
+  [class*="Collection"],
+  [class*="Entry"],
+  [class*="Workflow"] {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Force all buttons to respect viewport */
+  button {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 399px) {
+  [class*="AppHeaderSiteName"] {
+    max-width: calc(100vw - 100px) !important;
+    font-size: 12px !important;
+  }
+  
+  [class*="AppHeaderButton"] {
+    padding: 4px 6px !important;
+    font-size: 11px !important;
+  }
+  
+  [class*="AppHeaderAvatar"],
+  [class*="AppHeaderAvatar"] img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}

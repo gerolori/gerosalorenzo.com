@@ -1,0 +1,33 @@
+{{- with site.Params.homeInfoParams }}
+<article class="first-entry home-info">
+    <div class="profile-avatar-container" style="text-align: center; margin-bottom: 2rem;">
+        <img src="https://github.com/gerolori.png" 
+             alt="Lorenzo Gerosa" 
+             class="profile-avatar"
+             style="border-radius: 50%; 
+                    width: 150px; 
+                    height: 150px; 
+                    margin: 0 auto; 
+                    display: block; 
+                    border: 3px solid var(--border);
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;">
+    </div>
+    <header class="entry-header">
+        <h1>{{ .Title | markdownify }}</h1>
+    </header>
+    <div class="entry-content">
+        {{ .Content | markdownify }}
+    </div>
+    <footer class="entry-footer">
+        {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
+    </footer>
+</article>
+
+<style>
+    .profile-avatar:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    }
+</style>
+{{- end -}}

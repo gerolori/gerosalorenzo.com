@@ -1,0 +1,14 @@
+name = "gerosalorenzo-cms-auth"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Route configuration to handle OAuth callbacks
+routes = [
+  { pattern = "gerosalorenzo.com/api/auth/*", zone_name = "gerosalorenzo.com" }
+]
+
+[vars]
+GITHUB_CLIENT_ID = "Ov23litrSvPsy4Is9j48"
+
+[secrets]
+GITHUB_CLIENT_SECRET = ""  # Set via: wrangler secret put GITHUB_CLIENT_SECRET

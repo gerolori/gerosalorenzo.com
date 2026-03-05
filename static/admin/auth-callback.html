@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Authorizing...</title>
+  <script>
+    (function() {
+      // Extract token from URL hash
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const accessToken = params.get('access_token');
+      const provider = 'github';
+      
+      if (!accessToken) {
+        document.body.innerHTML = '<p style="color:red;">Error: No access token received. Please close this window and try again.</p>';
+        
+        if (window.opener) {
+          window.opener.postMessage(
+            'authorization:' + provider + ':error:' + JSON.stringify({ message: 'No access token received' }),
+            '*'
+          );
+        }
+        return;
+      }
+      
+      // Two-phase handshake with Decap CMS
+      const receiveMessage = (message) => {
+        // Parent window acknowledged the handshake, now send the token
+        window.opener.postMessage(
+          'authorization:' + provider + ':success:' + JSON.stringify({ 
+            token: accessToken,
+            provider: provider 
+          }),
+          message.origin
+        );
+        
+        window.removeEventListener("message", receiveMessage, false);
+        
+        // Close popup after sending token
+        setTimeout(() => {
+          window.close();
+        }, 100);
+      };
+      
+      // Listen for response from parent window
+      window.addEventListener("message", receiveMessage, false);
+      
+      // Phase 1: Initiate handshake
+      if (window.opener) {
+        window.opener.postMessage("authorizing:" + provider, "*");
+      } else {
+        document.body.innerHTML = '<p style="color:red;">Error: No parent window found. Please close this window.</p>';
+      }
+    })();
+  </script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #f5f5f5;
+    }
+    p {
+      text-align: center;
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <p>Authorizing with GitHub...<br><small>This window will close automatically.</small></p>
+</body>
+</html>
