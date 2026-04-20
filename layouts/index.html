@@ -1,0 +1,116 @@
+{{- define "main" }}
+
+{{- /* Personal Intro Section */ -}}
+{{- with site.Params.homeInfoParams }}
+<article class="first-entry home-info">
+    {{- /* Profile Photo */ -}}
+    <div class="profile-avatar-container" style="text-align: center; margin-bottom: 2rem;">
+        <img src="https://github.com/gerolori.png" 
+             alt="Lorenzo Gerosa" 
+             class="profile-avatar"
+             style="border-radius: 50%; 
+                    width: 150px; 
+                    height: 150px; 
+                    margin: 0 auto; 
+                    display: block; 
+                    border: 3px solid var(--border);
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;">
+    </div>
+    
+    <header class="entry-header">
+        <h1>{{ .Title | markdownify }}</h1>
+    </header>
+    <div class="entry-content">
+        {{ .Content | markdownify }}
+    </div>
+    <footer class="entry-footer">
+        {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
+    </footer>
+
+    <style>
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</article>
+{{- end }}
+
+{{- /* Recruiter CTA Section */ -}}
+<section class="recruiter-cta">
+    <div class="cta-buttons">
+        <a href="https://grlo.me/ld" class="button button-primary" aria-label="View CV">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            View CV
+        </a>
+        <a href="mailto:work@gerosalorenzo.com" class="button button-secondary" aria-label="Contact Me">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            Contact Me
+        </a>
+    </div>
+</section>
+
+{{- /* Latest Posts Section */ -}}
+<section class="latest-posts-section">
+    <div class="section-header-row">
+        <h2>Latest Posts</h2>
+        <a href="{{ "/blog/" | absURL }}" class="button-link" aria-label="Show all posts">Show All →</a>
+    </div>
+
+    {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+    {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+    {{- $pages = first 5 $pages }}
+
+    {{- range $index, $page := $pages }}
+    <article class="post-entry">
+        {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+        {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+        <header class="entry-header">
+            <h2 class="entry-hint-parent">
+                {{- .Title }}
+                {{- if .Draft }}
+                <span class="entry-hint" title="Draft">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+                        <path d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+                    </svg>
+                </span>
+                {{- end }}
+            </h2>
+        </header>
+        {{- if (ne (.Param "hideSummary") true) }}
+        <div class="entry-content">
+            <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+        </div>
+        {{- end }}
+        {{- if not (.Param "hideMeta") }}
+        <footer class="entry-footer">
+            {{- partial "post_meta.html" . -}}
+        </footer>
+        {{- end }}
+        <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+        {{- /* Series bookmark if post is part of a series */ -}}
+        {{- if .Params.series }}
+            {{- partial "series_bookmark.html" (dict "page" . "hideSeriesName" false) }}
+        {{- end }}
+    </article>
+    {{- end }}
+</section>
+
+{{- /* View All Posts CTA */ -}}
+<section class="view-all-cta">
+    <a href="{{ "/blog/" | absURL }}" class="button button-secondary" aria-label="Browse more posts">
+        Browse More Posts →
+    </a>
+</section>
+
+{{- end }}{{- /* end main */ -}}

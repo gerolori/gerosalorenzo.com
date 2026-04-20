@@ -1,0 +1,55 @@
+<script src="/js/search-shortcut.js"></script>
+<style>
+    /* Submenu dropdown styles */
+    .menu-item-has-children {
+        position: relative;
+    }
+
+    .submenu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 200px;
+        list-style: none;
+        margin: 0;
+        padding: 8px 0;
+        background: var(--entry);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+        z-index: 1000;
+    }
+
+    .menu-item-has-children:hover .submenu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .submenu li {
+        margin: 0 !important;
+    }
+
+    .submenu a {
+        display: block;
+        padding: 8px 20px;
+        font-size: 14px;
+        color: var(--primary);
+        transition: background-color 0.15s ease;
+        white-space: nowrap;
+    }
+
+    .submenu a:hover {
+        background-color: var(--tertiary);
+    }
+
+    .submenu .active {
+        font-weight: 500;
+        border-bottom: none;
+        color: var(--content);
+    }
+</style>

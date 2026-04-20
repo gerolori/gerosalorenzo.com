@@ -1,0 +1,95 @@
+{{ define "main" }}
+
+{{- /* Page Header */ -}}
+<header class="page-header">
+  {{- partial "breadcrumbs.html" . }}
+  <h1>
+    {{ .Title }}
+    {{- with .OutputFormats.Get "rss" }}
+    <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+    {{- end }}
+  </h1>
+  {{- if .Description }}
+  <div class="post-description">{{ .Description }}</div>
+  {{- end }}
+</header>
+
+{{- /* Quick Navigation */ -}}
+<div class="blog-quick-nav" style="margin-bottom: 1.5rem;">
+    <a href="{{ "/explore/" | absURL }}" 
+       class="button-link" 
+       style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.375rem 0.75rem; font-size: 0.875rem; font-weight: 500; color: var(--secondary); text-decoration: none; transition: color 0.2s ease; white-space: nowrap;"
+       aria-label="Browse all categories and tags">
+        Browse Categories & Tags →
+    </a>
+</div>
+
+<style>
+.blog-quick-nav a:hover {
+    color: var(--primary);
+}
+</style>
+
+{{- /* Paginated Post List */ -}}
+{{- $paginator := .Paginate .Pages }}
+
+{{- range $paginator.Pages }}
+<article class="post-entry">
+    {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+    {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+    
+    <header class="entry-header">
+        <h2 class="entry-hint-parent">
+            {{- .Title }}
+            {{- if .Draft }}
+            <span class="entry-hint" title="Draft">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="-960 960 960 960" fill="currentColor">
+                    <path d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+                </svg>
+            </span>
+            {{- end }}
+        </h2>
+    </header>
+    
+    {{- if (ne (.Param "hideSummary") true) }}
+    <div class="entry-content">
+        <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+    </div>
+    {{- end }}
+    
+    {{- if not (.Param "hideMeta") }}
+    <footer class="entry-footer">
+        {{- partial "post_meta.html" . -}}
+    </footer>
+    {{- end }}
+    
+    <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+    
+    {{- if .Params.series }}
+        {{- partial "series_bookmark.html" (dict "page" . "hideSeriesName" false) }}
+    {{- end }}
+</article>
+{{- end }}
+
+{{- /* Pagination */ -}}
+{{- if gt $paginator.TotalPages 1 }}
+<footer class="page-footer">
+    <nav class="pagination">
+        {{- if $paginator.HasPrev }}
+        <a class="prev" href="{{ $paginator.Prev.URL }}">← {{ i18n "prev_page" }}</a>
+        {{- end }}
+        {{- if $paginator.HasNext }}
+        <a class="next" href="{{ $paginator.Next.URL }}">{{ i18n "next_page" }} →</a>
+        {{- end }}
+    </nav>
+</footer>
+{{- end }}
+
+{{- end }}
