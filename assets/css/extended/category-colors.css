@@ -1,0 +1,66 @@
+/* ============================================
+   Category Badge Color Palette
+   ============================================
+   
+   To add a new category, follow this pattern:
+   
+   .category-badge[data-category="your-category"] {
+       background: #your-light-bg;
+       color: #your-text-color;
+   }
+   
+   .dark .category-badge[data-category="your-category"] {
+       background: #your-dark-bg;
+       color: #your-dark-text;
+   }
+   ============================================ */
+
+/* Self-hosting Category - Blue */
+.category-badge[data-category="self-hosting"] {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.dark .category-badge[data-category="self-hosting"] {
+    background: #0d47a1;
+    color: #90caf9;
+}
+
+/* Tutorial Category - Purple */
+.category-badge[data-category="tutorial"] {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.dark .category-badge[data-category="tutorial"] {
+    background: #4a148c;
+    color: #ce93d8;
+}
+
+/* Programming Category - Green */
+.category-badge[data-category="programming"] {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.dark .category-badge[data-category="programming"] {
+    background: #1b5e20;
+    color: #a5d6a7;
+}
+
+/* 3D Printing Category - Orange */
+.category-badge[data-category="3d-printing"] {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.dark .category-badge[data-category="3d-printing"] {
+    background: #bf360c;
+    color: #ffcc80;
+}
+
+/* Fallback for uncategorized or new categories */
+.category-badge:not([data-category="self-hosting"]):not([data-category="tutorial"]):not([data-category="programming"]):not([data-category="3d-printing"]) {
+    background: var(--code-bg);
+    color: var(--secondary);
+}

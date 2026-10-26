@@ -1,0 +1,61 @@
+{{- define "main" }}
+
+<header class="page-header">
+  <h1>
+    Series
+    {{- if (.Param "ShowRssButtonInSectionTermList") }}
+    {{- with .OutputFormats.Get "rss" }}
+    <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+    {{- end }}
+    {{- end }}
+  </h1>
+  <div class="post-description">All post series on this blog</div>
+</header>
+
+{{- range .Data.Terms.Alphabetical }}
+{{- $seriesPage := .Page }}
+{{- $postCount := .Count }}
+
+{{- /* Calculate total read time and latest date for this series */ -}}
+{{- $totalReadTime := 0 -}}
+{{- $latestDate := (time "1970-01-01") -}}
+{{- range .Pages -}}
+  {{- $totalReadTime = add $totalReadTime .ReadingTime -}}
+  {{- if gt .Date $latestDate -}}
+    {{- $latestDate = .Date -}}
+  {{- end -}}
+{{- end -}}
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">
+      {{- $seriesPage.Title }}
+    </h2>
+  </header>
+  
+  <div class="entry-content">
+    <p>
+      {{- with $seriesPage.Description }}
+      {{ . | plainify }}
+      {{- else }}
+      {{ $postCount }} {{ if eq $postCount 1 }}post{{ else }}posts{{ end }} in this series
+      {{- end }}
+    </p>
+  </div>
+  
+  <footer class="entry-footer">
+    <span title='{{ $latestDate }}'>{{ $latestDate.Format "Jan 2, 2006" }}</span>&nbsp;·&nbsp;{{ $totalReadTime }} min read&nbsp;·&nbsp;{{ $postCount }} {{ if eq $postCount 1 }}post{{ else }}posts{{ end }}
+  </footer>
+  
+  <a class="entry-link" aria-label="link to {{ $seriesPage.Title | plainify }} series" href="{{ $seriesPage.RelPermalink }}"></a>
+</article>
+{{- end }}
+
+{{- end }}

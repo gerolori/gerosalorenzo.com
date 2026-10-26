@@ -1,0 +1,902 @@
+/* Filters Container */
+.filters-container {
+  position: relative;
+}
+
+/* Filters Wrapper - Desktop row layout */
+.filters-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+/* Consistent button heights */
+.filter-toggle-btn,
+.dropdown-trigger {
+  height: 36px;
+  min-height: 36px;
+}
+
+/* Filter Toggle Button - Icon only */
+.filter-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  padding: 8px;
+  background: var(--theme);
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.filter-toggle-btn:hover {
+  cursor: pointer;
+}
+
+.filter-toggle-btn.active {
+  background: var(--primary);
+  color: var(--theme);
+  border-color: var(--primary);
+}
+
+.filter-toggle-btn .filter-icon {
+  display: block;
+  color: var(--primary);
+}
+
+.filter-toggle-btn .clear-icon {
+  display: none;
+  color: var(--primary);
+}
+
+.filter-toggle-btn.has-filters .filter-icon {
+  display: none;
+}
+
+.filter-toggle-btn.has-filters .clear-icon {
+  display: block !important;
+  color: var(--primary) !important;
+}
+
+/* Slide Panel - Hidden by default */
+.filter-panel {
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: visible;
+}
+
+.filter-panel.open {
+  display: flex;
+  animation: slideInFromLeft 0.3s ease;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Desktop: Filters inline on same row as filter button */
+@media (min-width: 769px) {
+  .filters-wrapper {
+    flex-direction: row;
+    flex-wrap: nowrap !important;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .filter-toggle-btn {
+    flex-shrink: 0;
+  }
+
+  .filter-panel {
+    display: none;
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    overflow: visible;
+    width: auto !important;
+  }
+
+  .filter-panel.open {
+    display: flex;
+    flex-direction: row !important;
+    width: auto !important;
+    animation: slideInFromLeft 0.3s ease;
+  }
+
+  .filter-panel-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    overflow: visible;
+  }
+
+  .sort-wrapper {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  /* Ensure dropdowns can overflow on desktop */
+  .custom-dropdown {
+    overflow: visible;
+  }
+
+  .dropdown-options {
+    z-index: 1000;
+  }
+
+  /* Hide overlay on desktop */
+  .filter-panel-overlay {
+    display: none;
+  }
+}
+
+/* Mobile: Filter button + Sort on same row, panel on separate row below */
+@media (max-width: 768px) {
+  .filters-wrapper {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filter-toggle-btn {
+    order: 1;
+  }
+
+  .sort-wrapper {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .filter-panel {
+    order: 3;
+    width: 100%;
+    margin-top: 8px;
+    position: relative;
+    transform: none;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .filter-panel.open {
+    display: flex;
+    flex-direction: column;
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .filter-panel-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .category-dropdown,
+  .tag-dropdown {
+    flex: 1 1 0 !important;
+    min-width: 0;
+    max-width: none;
+    width: auto;
+  }
+
+  .date-popup-trigger {
+    width: 36px !important;
+    min-width: 36px;
+    max-width: 36px;
+    flex: 0 0 36px !important;
+  }
+
+  .category-dropdown .dropdown-trigger,
+  .tag-dropdown .dropdown-trigger {
+    width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  /* Ensure dropdowns can overflow on mobile */
+  .custom-dropdown {
+    overflow: visible;
+  }
+
+  .dropdown-options {
+    position: absolute;
+    z-index: 1000;
+    min-width: max-content;
+  }
+
+  /* Hide mobile overlay - no longer needed */
+  .filter-panel-overlay {
+    display: none;
+  }
+}
+
+/* Ensure dropdowns can overflow */
+.blog-filters,
+.filters-container,
+.filter-panel,
+.filter-panel-content {
+  overflow: visible;
+}
+
+/* Custom Checkbox */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 0.625rem 1rem;
+  transition: background 0.15s ease;
+  width: 100%;
+}
+
+.custom-checkbox:hover {
+  background: var(--tertiary);
+}
+
+.checkbox-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 0;
+  height: 0;
+}
+
+.checkbox-custom {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--secondary);
+  border-radius: 4px;
+  background: var(--entry);
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.checkbox-input:checked + .checkbox-custom {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.checkbox-custom::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--theme);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.2s ease;
+}
+
+.checkbox-input:checked + .checkbox-custom::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.checkbox-input:focus-visible + .checkbox-custom {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.checkbox-label {
+  font-size: 0.875rem;
+  color: var(--primary);
+}
+
+/* Filter Chip Base */
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--theme);
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  appearance: none;
+}
+
+.filter-chip:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.filter-chip:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.filter-chip.active {
+  background: var(--primary);
+  color: var(--theme);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+.chip-arrow {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
+}
+
+.filter-chip.open .chip-arrow {
+  transform: rotate(180deg);
+}
+
+/* Filter Chip Wrapper */
+.filter-chip-wrapper {
+  position: relative;
+}
+
+/* Chip Dropdown */
+.chip-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  z-index: 100;
+  min-width: 200px;
+  max-height: 300px;
+  overflow-y: auto;
+  background: var(--theme);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  animation: dropdownSlide 0.2s ease;
+}
+
+.chip-dropdown.open {
+  display: block;
+}
+
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chip-dropdown .custom-checkbox {
+  padding: 0;
+}
+
+.chip-dropdown .custom-checkbox:hover {
+  background: var(--tertiary);
+}
+
+.option-count {
+  opacity: 0.6;
+  font-size: 0.8rem;
+  margin-left: 0.25rem;
+}
+
+/* Scrollbar Styling */
+.chip-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chip-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chip-dropdown::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.chip-dropdown::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Date Range Group (Mobile Inline) */
+.date-range-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.date-range-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--secondary);
+  white-space: nowrap;
+  min-width: 40px;
+}
+
+/* Desktop Date Popup Trigger - Icon only by default */
+.date-popup-trigger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+  padding: 8px;
+  background: var(--theme);
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.date-popup-trigger:hover {
+  cursor: pointer;
+}
+
+.date-popup-trigger.active {
+  background: var(--primary);
+  color: var(--theme);
+  border-color: var(--primary);
+}
+
+/* When date selected, expand button to show text */
+.date-popup-trigger.has-date {
+  width: auto;
+  padding: 8px 14px;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.date-popup-trigger .calendar-icon {
+  flex-shrink: 0;
+}
+
+.date-popup-trigger .date-label {
+  display: none;
+  white-space: nowrap;
+}
+
+.date-popup-trigger.has-date .date-label {
+  display: inline;
+}
+
+/* Desktop Date Popup */
+.date-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+}
+
+.date-popup-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.date-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  padding: 0;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+  min-width: 320px;
+}
+
+.date-popup.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.date-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--primary);
+}
+
+.date-popup-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--secondary);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.15s ease;
+  border-radius: 50%;
+}
+
+.date-popup-close:hover {
+  color: var(--primary);
+  background: var(--tertiary);
+}
+
+.date-popup-content {
+  padding: 20px;
+}
+
+.date-group {
+  margin-bottom: 16px;
+}
+
+.date-group:last-of-type {
+  margin-bottom: 20px;
+}
+
+.date-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--secondary);
+  margin-bottom: 8px;
+}
+
+.date-popup-row {
+  display: flex;
+  gap: 8px;
+}
+
+.date-popup-row .date-dropdown {
+  flex: 1;
+}
+
+.date-popup-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.date-clear-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: var(--secondary);
+  border: 1px solid var(--border);
+}
+
+.date-clear-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Custom Dropdown Component */
+.custom-dropdown {
+  position: relative;
+  width: auto;
+  flex: 0 0 auto;
+}
+
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  height: 36px;
+  min-height: 36px;
+  padding: 8px 14px;
+  background: var(--theme);
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  width: auto;
+  flex: 0 0 auto;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.dropdown-trigger:hover {
+  cursor: pointer;
+}
+
+.dropdown-trigger:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.custom-dropdown.active .dropdown-trigger {
+  background: var(--primary);
+  color: var(--theme);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+.dropdown-label {
+  flex: 0 0 auto;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dropdown-arrow {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+  opacity: 0.7;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-options {
+  position: absolute;
+  top: calc(100% + 0.375rem);
+  left: 0;
+  right: 0;
+  background: var(--theme);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.96);
+  transition: all 0.2s ease;
+  z-index: 100;
+  max-height: 250px;
+  overflow-y: auto;
+  min-width: max-content;
+}
+
+.custom-dropdown.open .dropdown-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.dropdown-option {
+  padding: 0.625rem 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+  color: var(--primary);
+  border-left: 3px solid transparent;
+}
+
+.dropdown-option:first-child {
+  border-radius: 11px 11px 0 0;
+}
+
+.dropdown-option:last-child {
+  border-radius: 0 0 11px 11px;
+}
+
+.dropdown-option:hover {
+  background: var(--tertiary);
+  border-left-color: var(--primary);
+}
+
+.dropdown-option.selected {
+  background: var(--primary);
+  color: var(--theme);
+  font-weight: 600;
+  border-left-color: var(--primary);
+}
+
+/* Dropdown options with checkboxes */
+.dropdown-options-checkbox {
+  padding: 0;
+}
+
+.dropdown-option-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.dropdown-option-checkbox:hover {
+  background: var(--tertiary);
+  border-left-color: var(--primary);
+}
+
+.dropdown-option-checkbox .checkbox-label {
+  flex: 1;
+  font-size: 0.875rem;
+  color: var(--primary);
+}
+
+/* Category and Tag dropdown sizing */
+.category-dropdown,
+.tag-dropdown {
+  width: auto;
+  flex: 0 0 auto;
+}
+
+/* Scrollbar for dropdown options */
+.dropdown-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-options::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Date-specific dropdown sizing */
+.date-dropdown {
+  flex: 1;
+  min-width: 80px;
+}
+
+.date-dropdown .dropdown-trigger {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Sort & Limit dropdowns */
+.sort-dropdown,
+.limit-dropdown {
+  width: auto;
+  flex: 0 0 auto;
+}
+
+/* Post Filtering */
+.filterable-post {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.filterable-post.hidden,
+.filterable-post.pagination-hidden {
+  display: none;
+}
+
+/* Desktop: Show date popup trigger */
+@media (min-width: 769px) {
+  .date-popup-trigger {
+    display: flex;
+  }
+}
+
+/* Mobile Responsive - Additional styles */
+@media (max-width: 768px) {
+  .date-popup-trigger {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .date-popup-trigger.has-date {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+
+  .dropdown-trigger {
+    height: 36px;
+    min-height: 36px;
+    justify-content: center;
+  }
+
+  .chip-dropdown,
+  .dropdown-options {
+    left: 0;
+    right: 0;
+    min-width: unset;
+  }
+
+  .custom-dropdown {
+    min-width: unset;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .filter-chip,
+  .chip-dropdown,
+  .dropdown-options,
+  .dropdown-arrow,
+  .dropdown-trigger,
+  .filterable-post,
+  .filter-panel,
+  .filter-panel-overlay,
+  .date-popup,
+  .date-popup-overlay,
+  .checkbox-custom,
+  .checkbox-custom::after,
+  #date-error-toast {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Date Error Toast */
+#date-error-toast {
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0; 
+    transform: translateX(-50%) translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(-50%) translateY(0); 
+  }
+}

@@ -1,0 +1,269 @@
+/* Series chip - top indicator before title */
+.series-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  margin-bottom: 1rem;
+  background: var(--tertiary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  transition: all 0.2s ease-out;
+  color: var(--content);
+  line-height: 1.4;
+}
+
+.series-chip:hover {
+  background: var(--primary);
+  color: var(--entry);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.series-chip-name {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.series-chip-progress {
+  opacity: 0.75;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  padding-left: 8px;
+  border-left: 1px solid var(--border);
+}
+
+.series-chip:hover .series-chip-progress {
+  border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .series-chip {
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    gap: 6px;
+  }
+
+  .series-chip-progress {
+    font-size: 0.6875rem;
+    padding-left: 6px;
+  }
+}
+
+/* Series bookmark ribbon - bottom-right corner */
+.series-bookmark {
+  position: absolute;
+  bottom: -3px;
+  right: 0;
+  background: color-mix(in srgb, var(--primary) 8%, var(--entry));
+  color: var(--secondary);
+  padding: 6px 14px 9px 12px;
+  border-radius: var(--radius) 0 0 0;
+  font-size: 0.75rem;
+  border-top: 1px solid color-mix(in srgb, var(--primary) 15%, var(--border));
+  border-left: 1px solid color-mix(in srgb, var(--primary) 15%, var(--border));
+  z-index: 10;
+  line-height: 1.35;
+  box-shadow:
+    -2px -2px 8px rgba(0, 0, 0, 0.06),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  transition: bottom 0.2s ease-out,
+              background 0.2s ease-out,
+              box-shadow 0.2s ease-out;
+}
+
+.series-bookmark:hover {
+  bottom: 0;
+  background: color-mix(in srgb, var(--primary) 15%, var(--entry));
+  box-shadow:
+    -4px -4px 16px rgba(0, 0, 0, 0.1),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.series-bookmark-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.series-name {
+  font-weight: 600;
+  color: var(--content);
+  letter-spacing: 0.01em;
+}
+
+.series-progress {
+  opacity: 0.7;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  padding-left: 8px;
+  border-left: 1px solid color-mix(in srgb, var(--primary) 20%, var(--border));
+}
+
+.series-progress.no-separator {
+  padding-left: 0;
+  border-left: none;
+}
+
+/* Ensure parent containers have position: relative */
+.post-entry,
+.post-single {
+  position: relative;
+}
+
+/* Hide ribbon overflow - clips the excess ribbon that extends below the card */
+.post-entry:has(.series-bookmark) {
+  overflow: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .series-bookmark {
+    font-size: 0.6875rem;
+    padding: 5px 10px 8px 8px;
+    bottom: -3px;
+  }
+
+  .series-bookmark-content {
+    gap: 6px;
+  }
+
+  .series-progress {
+    font-size: 0.625rem;
+    padding-left: 5px;
+  }
+}
+
+/* Series index page */
+.series-posts-list {
+  margin-top: 2rem;
+}
+
+.series-posts-list h2 {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.series-ordered-list {
+  list-style: none;
+  counter-reset: series-counter;
+  padding: 0;
+}
+
+.series-post-item {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--code-bg);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+  position: relative;
+}
+
+.series-post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.series-post-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  flex: 1;
+}
+
+.series-post-header h3 a {
+  color: var(--content);
+  text-decoration: none;
+}
+
+.series-post-header h3 a:hover {
+  color: var(--primary);
+}
+
+.series-post-part {
+  font-size: 0.85rem;
+  color: var(--secondary);
+  white-space: nowrap;
+  font-family: monospace;
+}
+
+.series-post-description {
+  margin: 0.5rem 0;
+  opacity: 0.9;
+}
+
+.series-post-meta {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .series-post-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .series-post-part {
+    font-size: 0.75rem;
+  }
+}
+
+/* Series taxonomy list (/series/ page) */
+.series-taxonomy-list {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.series-taxonomy-item {
+  padding: 2rem;
+  background: var(--entry);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.series-taxonomy-item h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+}
+
+.series-taxonomy-item h2 a {
+  color: var(--content);
+  text-decoration: none;
+}
+
+.series-taxonomy-item h2 a:hover {
+  color: var(--primary);
+}
+
+.series-count {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin: 0.25rem 0 1rem 0;
+}
+
+.series-description {
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.series-link {
+  display: inline-block;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.series-link:hover {
+  text-decoration: underline;
+}

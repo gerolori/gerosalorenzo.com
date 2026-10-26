@@ -1,0 +1,60 @@
+{{- /* Determine navigation context: series order or default chronological */ -}}
+{{- $seriesNav := false -}}
+{{- $seriesPages := slice -}}
+
+{{- /* Check if current page belongs to a series */ -}}
+{{- with .Params.series }}
+  {{- /* Get the first series this page belongs to */ -}}
+  {{- $seriesName := index . 0 -}}
+  {{- with (index $.Site.Taxonomies.series $seriesName) }}
+    {{- /* Get all pages in series and sort by series_weight */ -}}
+    {{- $seriesPages = .Pages.ByParam "series_weight" -}}
+    {{- if gt (len $seriesPages) 1 -}}
+      {{- $seriesNav = true -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Use series navigation or fall back to default chronological */ -}}
+{{- if $seriesNav -}}
+  {{- /* Series navigation: follow series_weight order */ -}}
+  {{- if in $seriesPages . }}
+  <nav class="paginav">
+    {{- with $seriesPages.Next . }}
+    <a class="prev" href="{{ .Permalink }}">
+      <span class="title">« {{ i18n "prev_page" }}</span>
+      <br>
+      <span>{{- .Name -}}</span>
+    </a>
+    {{- end }}
+    {{- with $seriesPages.Prev . }}
+    <a class="next" href="{{ .Permalink }}">
+      <span class="title">{{ i18n "next_page" }} »</span>
+      <br>
+      <span>{{- .Name -}}</span>
+    </a>
+    {{- end }}
+  </nav>
+  {{- end -}}
+{{- else -}}
+  {{- /* Default PaperMod behavior: chronological navigation */ -}}
+  {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+  {{- if and (gt (len $pages) 1) (in $pages . ) }}
+  <nav class="paginav">
+    {{- with $pages.Next . }}
+    <a class="prev" href="{{ .Permalink }}">
+      <span class="title">« {{ i18n "prev_page" }}</span>
+      <br>
+      <span>{{- .Name -}}</span>
+    </a>
+    {{- end }}
+    {{- with $pages.Prev . }}
+    <a class="next" href="{{ .Permalink }}">
+      <span class="title">{{ i18n "next_page" }} »</span>
+      <br>
+      <span>{{- .Name -}}</span>
+    </a>
+    {{- end }}
+  </nav>
+  {{- end -}}
+{{- end -}}

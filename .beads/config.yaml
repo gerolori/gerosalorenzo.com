@@ -1,0 +1,18 @@
+# Beads configuration
+project:
+  name: "Docu Hugo Site"
+  issue_prefix: "bd"
+  
+# Issue defaults
+defaults:
+  priority: 2
+  type: task
+  
+# Status workflow
+workflow:
+  statuses:
+    - open
+    - in_progress
+    - blocked
+    - deferred
+    - closed
